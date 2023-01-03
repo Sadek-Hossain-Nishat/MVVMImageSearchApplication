@@ -18,7 +18,9 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.photos.observe(viewLifecycleOwner){
-            
+
+
+
         }
 
     }
