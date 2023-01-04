@@ -5,6 +5,9 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.example.mvvmimagesearchapp.R
 import com.example.mvvmimagesearchapp.data.UnsplashPhoto
 import com.example.mvvmimagesearchapp.databinding.ItemUnsplashPhotoBinding
 
@@ -21,7 +24,16 @@ class UnsplashPhotoAdapter:
 
 
         fun bind(photo: UnsplashPhoto) {
-            
+            binding.apply {
+                Glide.with(itemView).load(photo.urls.regular)
+                    .centerCrop()
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .error(R    .drawable.ic_error)
+                    .into(idImageView)
+
+
+            }
+
         }
 
 
