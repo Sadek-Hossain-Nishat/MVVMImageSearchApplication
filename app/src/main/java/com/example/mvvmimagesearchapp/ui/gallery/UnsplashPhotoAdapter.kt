@@ -11,11 +11,12 @@ import com.example.mvvmimagesearchapp.R
 import com.example.mvvmimagesearchapp.data.UnsplashPhoto
 import com.example.mvvmimagesearchapp.databinding.ItemUnsplashPhotoBinding
 
-class UnsplashPhotoAdapter:
-    PagingDataAdapter<UnsplashPhoto, UnsplashPhotoAdapter.PhotoViewHolder>() {
+class UnsplashPhotoAdapter :
+    PagingDataAdapter<UnsplashPhoto, UnsplashPhotoAdapter.PhotoViewHolder>(PHOTO_COMPARISON) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        val binding = ItemUnsplashPhotoBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding =
+            ItemUnsplashPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PhotoViewHolder(binding)
     }
 
@@ -28,8 +29,10 @@ class UnsplashPhotoAdapter:
                 Glide.with(itemView).load(photo.urls.regular)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R    .drawable.ic_error)
+                    .error(R.drawable.ic_error)
                     .into(idImageView)
+
+                idTextViewUserName.text = photo.user.username
 
 
             }
@@ -41,22 +44,25 @@ class UnsplashPhotoAdapter:
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val currentItem = getItem(position)
+
+        if (currentItem != null) {
+
+            holder.bind(currentItem)
+        }
     }
 
     companion object {
         private val PHOTO_COMPARISON = object : DiffUtil.ItemCallback<UnsplashPhoto>() {
-            override fun areItemsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto)=
-                oldItem.id==newItem.id
+            override fun areItemsTheSame(oldItem: UnsplashPhoto, newItem: UnsplashPhoto) =
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(
                 oldItem: UnsplashPhoto,
                 newItem: UnsplashPhoto
-            )=oldItem == newItem
+            ) = oldItem == newItem
 
         }
     }
-
-
 
 
 }
