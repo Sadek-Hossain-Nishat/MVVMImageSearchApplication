@@ -11,7 +11,7 @@ import com.example.mvvmimagesearchapp.R
 import com.example.mvvmimagesearchapp.data.UnsplashPhoto
 import com.example.mvvmimagesearchapp.databinding.ItemUnsplashPhotoBinding
 
-class UnsplashPhotoAdapter :
+class UnsplashPhotoAdapter(private val listener:OnItemClickListener) :
     PagingDataAdapter<UnsplashPhoto, UnsplashPhotoAdapter.PhotoViewHolder>(PHOTO_COMPARISON) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
@@ -20,8 +20,34 @@ class UnsplashPhotoAdapter :
         return PhotoViewHolder(binding)
     }
 
-    class PhotoViewHolder(private val binding: ItemUnsplashPhotoBinding) :
+     inner class PhotoViewHolder(private val binding: ItemUnsplashPhotoBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+
+        init {
+            binding.root.setOnClickListener {
+
+                val position = bindingAdapterPosition
+                if (position!=RecyclerView.NO_POSITION) {
+
+                    val item = getItem(position)
+
+                    if (item!=null) {
+
+                        listener.onItemClick(item)
+                    }
+
+
+                }
+
+
+
+
+
+
+
+            }
+        }
 
 
         fun bind(photo: UnsplashPhoto) {
@@ -42,6 +68,9 @@ class UnsplashPhotoAdapter :
 
     }
 
+
+
+
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val currentItem = getItem(position)
 
@@ -49,6 +78,11 @@ class UnsplashPhotoAdapter :
 
             holder.bind(currentItem)
         }
+    }
+
+
+    interface OnItemClickListener {
+        fun onItemClick(photo: UnsplashPhoto)
     }
 
     companion object {
